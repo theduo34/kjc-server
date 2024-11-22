@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "target": "ESNext",                // Compile to modern JavaScript
+    "module": "CommonJS",              // Use CommonJS for Node.js compatibility
+    "rootDir": "./src",                // Source files directory
+    "outDir": "./dist",                // Compiled JavaScript output directory
+    "strict": true,                    // Enable strict type checking
+    "esModuleInterop": true,           // Allow compatibility with CommonJS
+    "skipLibCheck": true               // Skip type checking for libraries
+  },
+  "include": ["src"],                  // Include the source folder
+  "exclude": ["node_modules"]          // Exclude dependencies
+}
