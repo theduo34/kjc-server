@@ -1,6 +1,6 @@
-import express, {Application} from 'express';
-
+import express, {Application, NextFunction, Response, Request} from 'express';
 import connectDB from "./config/db.config";
+import userRoutes from "./routes/user/user.route";
 
 const app: Application = express();
 
@@ -11,18 +11,15 @@ app.use(express.json());
 connectDB();
 
 //routes
-app.get('/', (req, res) => {
-  res.send("Hello World")
-})
+app.use('/api/v1/users', userRoutes)
 
 // 404 Handler
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
 // Global Error Handler
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error(err.stack);
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
