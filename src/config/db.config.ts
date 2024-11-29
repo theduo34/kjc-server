@@ -3,17 +3,20 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const mongooseURL = process.env.MONGO_URI;
+const mongooseURI = process.env.MONGO_URI;
 
 const connectDB = async () => {
-  if (!mongooseURL) {
+  if (!mongooseURI) {
     console.log('MongoDB URI is missing.');
     process.exit(1);
   }
 
   try {
-    await mongoose.connect(mongooseURL);
-    console.log('MongoDB connected');
+    await mongoose.connect(mongooseURI,{
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      // useCreateIndex: true,
+    }).then(() => console.log('MongoDB Connected'));
   }
   catch (error) {
     console.error('Error connecting to MongoDB:', error);
