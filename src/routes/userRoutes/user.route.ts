@@ -1,5 +1,5 @@
 import express = require("express");
-import {createUser, deleteUser, getUser, getUsers, updateUser} from "../../controllers/user/create-user.controller";
+import {createUser, deleteUser, getUser, getUsers, updateUser} from "../../controllers/userControllers/create-user.controller";
 const routes = express.Router();
 
 routes.post('/register', createUser);
