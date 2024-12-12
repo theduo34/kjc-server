@@ -1,9 +1,11 @@
 import mongoose, { Schema, Document} from "mongoose";
+import bcrypt from 'bcrypt'
 
 interface IRegister extends Document {
   email: string;
   password: string;
   roles?: string;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userModel = new Schema<IRegister>(
@@ -12,8 +14,6 @@ const userModel = new Schema<IRegister>(
       type: String,
       required: [true, 'Please enter an email'],
       unique: true,
-      // match: /.+@.+\..+/,
-      // trim: true
     },
     password: {
       type: String,
@@ -31,7 +31,24 @@ const userModel = new Schema<IRegister>(
   {
     timestamps: true
   }
-)
+);
+
+userModel.pre<IRegister>("save", async function (next)  {
+  const user = this;
+  if(!user.isModified('password')) {
+    return next();
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  } catch(error: any) {
+    next(error)
+  }
+});
+
+userModel.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
+  return await bcrypt.compare(candidatePassword, this.password);
+}
 
 const UserModel = mongoose.models.User || mongoose.model<IRegister>('User', userModel);
 export default UserModel;
