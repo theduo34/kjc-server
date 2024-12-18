@@ -10,15 +10,10 @@ const connectDB = async () => {
     console.log('MongoDB URI is missing.');
     process.exit(1);
   }
-
   try {
-    await mongoose.connect(mongooseURI,{
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-      // useCreateIndex: true,
-    }).then(() => console.log('MongoDB Connected'));
-  }
-  catch (error) {
+    await mongoose.connect(mongooseURI,{})
+      .then(() => console.log('MongoDB Connected'));
+  } catch (error) {
     console.error('Error connecting to MongoDB:', error);
     process.exit(1);
   }
